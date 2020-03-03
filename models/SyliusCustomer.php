@@ -80,7 +80,7 @@ class SyliusCustomer extends \yii\db\ActiveRecord
             'last_name' => 'Nazwisko',
             'birthday' => 'Urodziny',
             'gender' => 'Płeć',
-            'created_at' => 'Created At',
+            'created_at' => 'Stworzono',
             'updated_at' => 'Updated At',
             'phone_number' => 'Numer telefonu',
             'subscribed_to_newsletter' => 'Subscribed To Newsletter',
