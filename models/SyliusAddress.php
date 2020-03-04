@@ -52,7 +52,7 @@ class SyliusAddress extends \yii\db\ActiveRecord
     {
         return [
             // [['customer_id'], 'integer'],
-            [['first_name', 'last_name', 'street', 'city', 'postcode', 'created_at', 'country_code'], 'required'],
+            [['first_name', 'last_name', 'street', 'city', 'postcode'], 'required','message' => 'To pole jest wymagane'],
             [['created_at', 'updated_at'], 'safe'],
             [['first_name', 'last_name', 'phone_number', 'street', 'company', 'city', 'postcode', 'country_code', 'province_code', 'province_name'], 'string', 'max' => 255],
             [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => SyliusCustomer::className(), 'targetAttribute' => ['customer_id' => 'id']],
@@ -67,18 +67,18 @@ class SyliusAddress extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'customer_id' => 'Customer ID',
-            'first_name' => 'First Name',
-            'last_name' => 'Last Name',
-            'phone_number' => 'Phone Number',
-            'street' => 'Street',
-            'company' => 'Company',
-            'city' => 'City',
-            'postcode' => 'Postcode',
+            'first_name' => 'Imię',
+            'last_name' => 'Nazwisko',
+            'phone_number' => 'Numer telefonu',
+            'street' => 'Ulica',
+            'company' => 'Nazwa firmy',
+            'city' => 'Miasto',
+            'postcode' => 'Kod pocztowy',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'country_code' => 'Country Code',
             'province_code' => 'Province Code',
-            'province_name' => 'Province Name',
+            'province_name' => 'Województwo',
         ];
     }
 

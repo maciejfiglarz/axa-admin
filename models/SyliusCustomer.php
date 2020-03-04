@@ -52,16 +52,16 @@ class SyliusCustomer extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['customer_group_id', 'default_address_id', 'subscribed_to_newsletter'], 'integer'],
-            [['email', 'email_canonical', 'created_at', 'subscribed_to_newsletter'], 'required'],
-            [['birthday', 'created_at', 'updated_at'], 'safe'],
+            [['default_address_id'], 'integer'],
+            [['email'], 'required','message' => 'To pole jest wymagane'],
+            [['birthday'], 'safe'],
             [['email', 'email_canonical', 'first_name', 'last_name', 'phone_number'], 'string', 'max' => 255],
             [['gender'], 'string', 'max' => 1],
-            [['email'], 'unique'],
-            [['email_canonical'], 'unique'],
-            [['default_address_id'], 'unique'],
+            [['email'], 'unique','message' => 'Użytkownik o takim adresie email istnieje już w bazie danych'],
+            // [['email_canonical'], 'unique','message' => 'Użytkownik o takim adresie email istnieje już w bazie danych'],
+            [['default_address_id'], 'unique','message' => 'Uniqu'],
             [['default_address_id'], 'exist', 'skipOnError' => true, 'targetClass' => SyliusAddress::className(), 'targetAttribute' => ['default_address_id' => 'id']],
-            [['customer_group_id'], 'exist', 'skipOnError' => true, 'targetClass' => SyliusCustomerGroup::className(), 'targetAttribute' => ['customer_group_id' => 'id']],
+            [['customer_group_id'], 'exist', 'skipOnError' => true, 'targetClass' => SyliusCustomerGroup::className(), 'targetAttribute' => ['customer_group_id' => 'id'],'message'=>'valid'],
         ];
     }
 

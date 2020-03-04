@@ -1,4 +1,4 @@
-<?= $form->field($model, 'customer_id')->textInput() ?>
+<?= $form->field($model, 'customer_id',['labelOptions' => [ 'class' => 'display-none']])->textInput([ 'class' => 'display-none']) ?>
 
 <?= $form->field($model, 'first_name')->textInput(['maxlength' => true]) ?>
 
@@ -14,12 +14,12 @@
 
 <?= $form->field($model, 'postcode')->textInput(['maxlength' => true]) ?>
 
-<?= $form->field($model, 'created_at')->textInput() ?>
+<?= $form->field($model, 'created_at',['labelOptions' => [ 'class' => 'display-none']])->textInput([ 'class' => 'display-none']) ?>
 
-<?= $form->field($model, 'updated_at')->textInput() ?>
+<?= $form->field($model, 'updated_at',['labelOptions' => [ 'class' => 'display-none']])->textInput([ 'class' => 'display-none']) ?>
 
-<?= $form->field($model, 'country_code')->textInput(['maxlength' => true]) ?>
+<?= $form->field($model, 'country_code',['labelOptions' => [ 'class' => 'display-none']])->textInput(['maxlength' => true,'class' => 'display-none']) ?>
 
-<?= $form->field($model, 'province_code')->textInput(['maxlength' => true]) ?>
+<?= $form->field($model, 'province_code',['labelOptions' => [ 'class' => 'display-none']])->textInput(['maxlength' => true,'class' => 'display-none']) ?>
 
 <?= $form->field($model, 'province_name')->textInput(['maxlength' => true]) ?>

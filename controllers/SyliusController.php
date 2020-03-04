@@ -13,6 +13,10 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+use kartik\form\ActiveForm;
+
+use app\helpers\SyliusHelper;
+
 /**
  * SyliusController implements the CRUD actions for SyliusShopUser model.
  */
@@ -41,6 +45,7 @@ class SyliusController extends Controller
     {
         $dataProvider = new ActiveDataProvider([
             'query' => SyliusShopUser::find(),
+            'sort'=> ['defaultOrder' => ['id'=>SORT_DESC]]
         ]);
 
         return $this->render('index', [
@@ -58,19 +63,13 @@ class SyliusController extends Controller
     {
 
         $shopUserModel = $this->findShopUserModel($id);
-
         $customerModelId = $shopUserModel->id;
-        $customerModel = $this->findCustomerModel($customerModelId );
-   
-        // $customerModelId = $shopUserModel->custroid;
-     
+        $customerModel = $this->findCustomerModel($customerModelId);
+       // dd($customerModel);
         $customerGroupModelId = $customerModel->customer_group_id;
         $customerGroupModel = $this->findCustomerGroupModel($customerGroupModelId);
-        
         $customerAddressModel = $this->findAddressModel($customerGroupModelId);
-        // dd( $customerAddressModel);
-
-        $customerGroupModel = $this->findAddressModel($customerModelId);
+      
 
 
       //  dd($customerGroupModel);
@@ -79,7 +78,7 @@ class SyliusController extends Controller
             'shopUserModel' => $shopUserModel,
             'customerModel' => $customerModel,
             'customerGroupModel' => $customerGroupModel,
-            'customerAddressModel' => $customerAddressModel
+            'addressModel' => $customerAddressModel
 
         ]);
     }
@@ -95,50 +94,38 @@ class SyliusController extends Controller
         $customerModel = new SyliusCustomer();
         $customerGroupModel = new SyliusCustomerGroup();
         $addressModel  = new SyliusAddress();
+        $syliusHelper = new SyliusHelper();
         $today  = date('Y-m-d H:i:s');
         $request = Yii::$app->request;
+
+
 
         if ($request->isPost) {
 
             $isCustomerLoaded = $customerModel->load(Yii::$app->request->post());
             $isLoadedShopUser = $shopUserModel->load(Yii::$app->request->post());
             $isLoadedAddress = $addressModel->load(Yii::$app->request->post());
-            $isCustomerGroupAddress = $customerGroupModel->load(Yii::$app->request->post());
+            $isLoadedCustomerGroupAddress = $customerGroupModel->load(Yii::$app->request->post());
 
+            $customerGroupModel = $syliusHelper->prepareCustomerGroupModel($customerGroupModel);
+            $customerGroupId = $customerGroupModel->id;        
 
-            $isCustomerGroupAddress = $customerGroupModel->save();
-            $customerGroupId = $customerGroupModel->id;
+            $customerModel = $syliusHelper->prepareCustomerModel($customerModel,$customerGroupId);
+  
+            $customerModelId = $customerModel->id;
 
-
-            $customerModel->subscribed_to_newsletter = 0;
-            $customerModel->created_at = $today;
-            $customerModel->customer_group_id = $customerGroupId;
-
-            $isCustomerSave =  $customerModel->save();
-            $customerModel->refresh();
-
-            //var_dump($customerModel);
-            $customerId = $customerModel->id;
-            // dd($customerId);
-
-            $addressModel->created_at = $today;
-            $addressModel->customer_id = $customerId;
-            $isAddressSave  = $addressModel->save();
-
-                        
-            $shopUserModel->customer_id = $customerId;
-            $shopUserModel->created_at = $today;
-
-            //  $shopUserModel->refresh();
-            //dd($shopUserModel);
-            // dd($customerId,$isLoadedAddress);
-            //  var_dump($isCustomerLoaded , $isLoadedShopUser , $shopUserModel->save(),$shopUserModel->customer_id,$shopUserModel->errors,$isLoadedAddress);
-             //   dd($shopUserModel->save());
-            if ($isCustomerLoaded &&  $isLoadedShopUser && $isLoadedAddress && $shopUserModel->save()) {
-
+            var_dump($customerModelId);
+            if(!is_null($customerModelId)){
+                $addressModel = $syliusHelper->prepareAddressModel($addressModel,$customerModelId);
+                $shopUserModel = $syliusHelper->prepareUserShopModel($shopUserModel, $customerModelId);
+                $customerModel = $syliusHelper->setCustomerGroupForCustomerModel($customerModel, $customerGroupId);
+         
+          var_dump(ActiveForm::validate($addressModel) ,  ActiveForm::validate($customerGroupModel) , ActiveForm::validate($customerModel) , ActiveForm::validate($shopUserModel));
+            if(count(ActiveForm::validate($addressModel)) == 0 &&  count(ActiveForm::validate($customerGroupModel))==0 && count(ActiveForm::validate($customerModel))==0 && count(ActiveForm::validate($shopUserModel))==0){
                 return $this->redirect(['view', 'id' => $shopUserModel->id]);
             }
-            var_dump($isCustomerLoaded, $isLoadedShopUser, $shopUserModel->save(), $shopUserModel->customer_id, $shopUserModel->errors, $isLoadedAddress);
+          }
+     
         }
 
 
@@ -162,12 +149,22 @@ class SyliusController extends Controller
     {
         $model = $this->findModel($id);
 
+        $shopUserModel = $this->findShopUserModel($id);
+        $customerModelId = $shopUserModel->id;
+        $customerModel = $this->findCustomerModel($customerModelId);
+        $customerGroupModelId = $customerModel->customer_group_id;
+        $customerGroupModel = $this->findCustomerGroupModel($customerGroupModelId);
+        $customerAddressModel = $this->findAddressModel($customerGroupModelId);
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
-            'model' => $model,
+            'shopUserModel' => $shopUserModel,
+            'customerModel' => $customerModel,
+            'customerGroupModel' => $customerGroupModel,
+            'addressModel' => $customerAddressModel
         ]);
     }
 
@@ -198,17 +195,28 @@ class SyliusController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException('The requested page does not exist - user.');
     }
 
-    protected function findCustomerModel($id)
+    protected function findModel($id)
     {
-        if (($model = SyliusCustomer::findOne($id)) !== null) {
+        if (($model = SyliusShopUser::findOne($id)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    protected function findCustomerModel($id)
+    {
+
+        if (($model = SyliusCustomer::findOne($id)) !== null) {
+            return $model;
+        }
+        
+        throw new NotFoundHttpException('The requested page does not exist - customer.');
+    }
+
 
 
     protected function findAddressModel($id)
@@ -217,7 +225,7 @@ class SyliusController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException('The requested page does not exist - address.');
     }
 
     protected function findCustomerGroupModel($id)
@@ -226,7 +234,7 @@ class SyliusController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException('The requested page does not exist - customer group.');
     }
 
 }

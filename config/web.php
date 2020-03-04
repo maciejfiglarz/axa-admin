@@ -10,6 +10,7 @@ function dd($v) {
 
 $config = [
     'id' => 'basic',
+    "language"=>"pl",
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'name'=>'AXA',
@@ -54,15 +55,15 @@ $config = [
         'db' => [
             'class' => 'yii\db\Connection',
             'dsn' => 'mysql:host=localhost;dbname=yii-sylius',
-            'username' => 'newuser',
-            'password' => 'XXJj123.',
+            'username' => 'root',
+            'password' => '',
             'charset' => 'utf8',
         ],
         'dbSylius' => [
             'class' => 'yii\db\Connection',
             'dsn' => 'mysql:host=localhost;dbname=sylius',
-            'username' => 'newuser',
-            'password' => 'XXJj123.',
+            'username' => 'root',
+            'password' => '',
             'charset' => 'utf8',
         ],
 
@@ -74,15 +75,20 @@ $config = [
                 ],
             ],
        ],
+       'assetManager' => [
+        'bundles' => [
+            'kartik\form\ActiveFormAsset' => [
+                'bsDependencyEnabled' => false // do not load bootstrap assets for a specific asset bundle
+            ],
+        ],
+    ],
 
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
         ],
-        */
     ],
     'params' => $params,
 ];

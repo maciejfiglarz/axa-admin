@@ -37,9 +37,9 @@ class SyliusCustomerGroup extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['code', 'name'], 'required'],
+            [['code', 'name'], 'required','message' => 'To pole jest wymagane'],
             [['code', 'name'], 'string', 'max' => 255],
-            [['code'], 'unique'],
+            [['code'], 'unique','message' => 'Ten kod jest już w bazie'],
         ];
     }
 
@@ -50,8 +50,8 @@ class SyliusCustomerGroup extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'code' => 'Code',
-            'name' => 'Name',
+            'code' => 'Kod',
+            'name' => 'Nazwa',
         ];
     }
 

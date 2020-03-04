@@ -56,12 +56,13 @@ class SyliusShopUser extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['enabled', 'salt', 'password', 'locked', 'roles', 'created_at'], 'required'],
+            // [['enabled', 'salt', 'password', 'locked', 'roles', 'created_at'], 'required'],
+            [['username','enabled', 'password', 'locked'], 'required','message' => 'To pole jest wymagane'],
             [['enabled', 'locked'], 'integer'],
             [['last_login', 'password_requested_at', 'verified_at', 'expires_at', 'credentials_expire_at', 'created_at', 'updated_at'], 'safe'],
-            [['roles'], 'string'],
+            // [['roles'], 'string'],
             [['username', 'username_canonical', 'salt', 'password', 'password_reset_token', 'email_verification_token', 'email', 'email_canonical', 'encoder_name'], 'string', 'max' => 255],
-            [['customer_id'], 'unique'],
+            [['customer_id'], 'unique',],
             [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => SyliusCustomer::className(), 'targetAttribute' => ['customer_id' => 'id']],
         ];
     }
@@ -75,10 +76,10 @@ class SyliusShopUser extends \yii\db\ActiveRecord
             'id' => 'ID',
             'customer_id' => 'Customer ID',
             'username' => 'Nazwa użytkownika',
-            'username_canonical' => 'Username Canonical',
-            'enabled' => 'Enabled',
+            'username_canonical' => 'Kanoniczna nazwa użytkownika',
+            'enabled' => 'Aktywny',
             'salt' => 'Salt',
-            'password' => 'Password',
+            'password' => 'Hasło',
             'last_login' => 'Last Login',
             'password_reset_token' => 'Password Reset Token',
             'password_requested_at' => 'Password Requested At',

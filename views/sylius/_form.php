@@ -12,16 +12,16 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <h1>User</h1>
+    <h3 class="form__partial">Dane użytkownik</h1>
     <?= $this->render('form/_user.php', array('model' => $shopUserModel, 'form' => $form)); ?>
-    <br><br>
-    <h1>Customer</h1>
+
+    <h1 class="form__partial">Dane klienta</h1>
     <?= $this->render('form/_customer.php', array('model' => $customerModel, 'form' => $form)); ?>
 
-    <h1>Adres</h1>
+    <h1 class="form__partial">Dane adresowe</h1>
     <?= $this->render('form/_address.php', array('model' => $addressModel, 'form' => $form)); ?>
 
-    <h1>Customer Group</h1>
+    <h1 class="form__partial">Grupa dla klienta</h1>
     <?= $this->render('form/_customer-group.php', array('model' => $customerGroupModel, 'form' => $form)); ?>
 
     <div class="form-group">

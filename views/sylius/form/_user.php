@@ -1,39 +1,49 @@
-<?= $form->field($model, 'customer_id',['labelOptions' => [ 'class' => '' ]])->textInput(['class'=>'']) ?>
+
+<?= $form->field($model, 'customer_id', ['labelOptions' => ['class' => 'display-none']])->textInput(['class' => 'display-none']) ?>
 
 <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
 
-<?= $form->field($model, 'username_canonical')->textInput(['maxlength' => true]) ?>
+<?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-<?= $form->field($model, 'enabled')->checkBox() ?>
+<?= $form->field($model, 'username_canonical', ['labelOptions' => ['class' => 'display-none']])->textInput(['maxlength' => true, 'class' => 'display-none']) ?>
 
-<?= $form->field($model, 'salt')->textInput(['maxlength' => true]) ?>
+<?= $form->field($model, 'salt', ['labelOptions' => ['class' => 'display-none']])->textInput(['maxlength' => true, 'class' => 'display-none']) ?>
 
 <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
 
-<?= $form->field($model, 'last_login')->textInput() ?>
 
-<?= $form->field($model, 'password_reset_token')->textInput(['maxlength' => true]) ?>
+<?= $form->field($model, 'enabled', ['labelOptions' => ['class' => 'custom-control-label']])->checkBox(['class' => 'form-check-input']) ?>
 
-<?= $form->field($model, 'password_requested_at')->textInput() ?>
+<div class="form-group">
+    <div class="custom-control custom-checkbox">
+        <?= $form->field($model, 'enabled', ['labelOptions' => ['class' => 'custom-control-input']])->checkBox(['class' => 'custom-control-label']) ?>
+    </div>
+</div>
 
-<?= $form->field($model, 'email_verification_token')->textInput(['maxlength' => true]) ?>
+<?= $form->field($model, 'last_login', ['labelOptions' => ['class' => 'display-none']])->textInput(['class' => 'display-none']) ?>
 
-<?= $form->field($model, 'verified_at')->textInput() ?>
+<?= $form->field($model, 'password_reset_token', ['labelOptions' => ['class' => 'display-none']])->textInput(['maxlength' => true, 'class' => 'display-none']) ?>
+
+<?= $form->field($model, 'password_requested_at', ['labelOptions' => ['class' => 'display-none']])->textInput(['class' => 'display-none']) ?>
+
+<?= $form->field($model, 'email_verification_token', ['labelOptions' => ['class' => 'display-none']])->textInput(['maxlength' => true, 'class' => 'display-none']) ?>
+
+<?= $form->field($model, 'verified_at', ['labelOptions' => ['class' => 'display-none']])->textInput(['class' => 'display-none']) ?>
 
 <?= $form->field($model, 'locked')->checkBox() ?>
 
-<?= $form->field($model, 'expires_at')->textInput() ?>
+<?= $form->field($model, 'expires_at', ['labelOptions' => ['class' => 'display-none']])->textInput(['class' => 'display-none']) ?>
 
-<?= $form->field($model, 'credentials_expire_at')->textInput() ?>
+<?= $form->field($model, 'credentials_expire_at', ['labelOptions' => ['class' => 'display-none']])->textInput(['class' => 'display-none']) ?>
 
-<?= $form->field($model, 'roles')->textarea(['rows' => 6]) ?>
+<?= $form->field($model, 'roles', ['labelOptions' => ['class' => 'display-none']])->textarea(['rows' => 6, 'class' => 'display-none']) ?>
 
-<?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-<?= $form->field($model, 'email_canonical')->textInput(['maxlength' => true]) ?>
 
-<?= $form->field($model, 'created_at')->textInput() ?>
+<?= $form->field($model, 'email_canonical', ['labelOptions' => ['class' => 'display-none']])->textInput(['maxlength' => true, 'class' => 'display-none']) ?>
 
-<?= $form->field($model, 'updated_at')->textInput() ?>
+<?= $form->field($model, 'created_at', ['labelOptions' => ['class' => 'display-none']])->textInput(['class' => 'display-none']) ?>
 
-<?= $form->field($model, 'encoder_name')->textInput(['value'=>'argon2i']) ?>
+<?= $form->field($model, 'updated_at', ['labelOptions' => ['class' => 'display-none']])->textInput(['class' => 'display-none']) ?>
+
+<?= $form->field($model, 'encoder_name', ['labelOptions' => ['class' => 'display-none']])->textInput(['value' => 'argon2i', 'class' => 'display-none']) ?>
