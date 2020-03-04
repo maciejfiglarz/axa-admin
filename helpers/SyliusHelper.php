@@ -26,18 +26,6 @@ class SyliusHelper
         $this->today = date('Y-m-d H:i:s');
     }
 
-    // public function prepareUserShop($shopUserModel, $customerModelId)
-    // {
-    //     $username = $shopUserModel->username;
-    //     $shopUserModel->username_canonical = $username;
-    //     $shopUserModel->customer_id = $customerModelId;
-    //     $shopUserModel->created_at = $this->today;
-    //     $shopUserModel->roles = 'a:1:{i:0;s:9:"ROLE_USER";}';
-    //     $shopUserModel->save();
-    //     return $shopUserModel;
-    // }
-
-
     public function prepareAddressModel($addressModel, $customerModelId)
     {
 
@@ -69,8 +57,7 @@ class SyliusHelper
             $birthday = $customerModel->birthday;
             $s = $birthday;
             $date = strtotime($s);
-            $birthday = date('d-M-Y H:i:s', $date);
-
+            $birthday = date('Y-m-d H:i:s', $date);
             $customerModelFromDB->birthday = $birthday;
 
             $email = $customerModel->email;
@@ -81,6 +68,8 @@ class SyliusHelper
             return $customerModelFromDB;
         }
 
+
+
         $email = $customerModel->email;
         $customerModel->email_canonical = $email;
         $customerModel->subscribed_to_newsletter = 0;
@@ -90,7 +79,7 @@ class SyliusHelper
         $birthday = $customerModel->birthday;
         $s = $birthday. ' 19:00:02';
         $date = strtotime($s);
-        $birthday = date('d-M-Y H:i:s', $date);
+        $birthday = date('Y-m-d H:i:s', $date);
         $customerModel->birthday = $birthday;
      
         $customerModel->save();
@@ -112,23 +101,51 @@ class SyliusHelper
         return $customerGroupModel;
     }
 
-    public function prepareUserShopModel($userShopModel, $customerModelId)
+    public function prepareUserShopModel($userShopModel, $customerModelId,$plainPassword)
     {
         
-        $userShopModelFromDB = $this->findUserModelByCustomerModelId($customerModelId);
-       // dd($customerModelId);
+        $userShopModelFromDB = $this->findUserShopByCustomerlId($customerModelId);
+
         if ($userShopModelFromDB) {
-            $username = $userShopModelFromDB->username;
+
+            $username = $userShopModel->username;
+            $userShopModelFromDB->username = $username;
             $userShopModelFromDB->username_canonical = $username;
+
+            $salt = $userShopModel->salt;
+
+            $password = $userShopModel->password;
+    
+
+            if(strlen($plainPassword)>0){
+         
+                $options = [
+                    'salt' => $salt,  //write your own code to generate a suitable salt
+                    'cost' => 12 // the default cost is 10
+                ];
+                $password = password_hash($plainPassword, PASSWORD_ARGON2I, $options);
+                $userShopModelFromDB->password = $password; 
+              
+            }
+
+            $email = $userShopModel->email;
+            $userShopModelFromDB->email = $email;
+            $userShopModelFromDB->email_canonical = $email;           
+
             $userShopModelFromDB->update();
             return $userShopModelFromDB;
         }
-        // $password = $userShopModel->password;
-        // $options = [
-        //     'salt' => 'fgrsgdrgdrgdrgdgffefefdffefefe',  //write your own code to generate a suitable salt
-        //     'cost' => 12 // the default cost is 10
-        // ];
-        // $hash = password_hash($password, PASSWORD_ARGON2I, $options);
+
+        if(strlen($plainPassword)>0){
+            $salt = md5($this->today);
+            $options = [
+                'salt' => $salt, 
+                'cost' => 12
+            ];
+            $password = password_hash($plainPassword, PASSWORD_ARGON2I, $options);
+            $userShopModel->password = $password; 
+          
+        }
 
         $username = $userShopModel->username;
         $userShopModel->username_canonical = $username;
@@ -137,6 +154,17 @@ class SyliusHelper
         $userShopModel->roles = 'a:1:{i:0;s:9:"ROLE_USER";}';
         $userShopModel->save();
         return $userShopModel;
+    }
+
+    public function findUserShopByCustomerlId($customerModelId)
+    {
+
+        if (($model = SyliusShopUser::find()->where(['customer_id' => $customerModelId])->one()) !== null) {
+            return $model;
+        }
+
+        return null;
+
     }
 
     public function setCustomerGroupForCustomerModel($customerModel, $customerGroupId)

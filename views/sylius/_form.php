@@ -12,8 +12,8 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <h3 class="form__partial">Dane użytkownik</h1>
-    <?= $this->render('form/_user.php', array('model' => $shopUserModel, 'form' => $form)); ?>
+    <h3 class="form__partial">Dane użytkownika</h1>
+    <?= $this->render('form/_user.php', array('model' => $shopUserModel, 'form' => $form,'isEdit'=>$isEdit)); ?>
 
     <h1 class="form__partial">Dane klienta</h1>
     <?= $this->render('form/_customer.php', array('model' => $customerModel, 'form' => $form)); ?>

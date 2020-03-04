@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $shopUserModel app\models\SyliusShopUser */
 
-$this->title = $shopUserModel->id;
+$this->title =  $customerModel->first_name .' '. $customerModel->last_name;
 $this->params['breadcrumbs'][] = ['label' => 'Użytkownicy', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -34,15 +34,33 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'customer_id',
             'username',
             // 'username_canonical',
-            'enabled',
+            [
+                'attribute' => 'enabled',
+                'value' => function ($data) {
+                    if ($data['enabled'] == '1') {
+                        return 'tak';
+                    } else {
+                        return 'nie';
+                    }
+                }, 'format' => 'raw'
+            ],
             // 'salt',
-            'password',
+            // 'password',
             // 'last_login',
             // 'password_reset_token',
             // 'password_requested_at',
             // 'email_verification_token:email',
             // 'verified_at',
-            'locked',
+            [
+                'attribute' => 'locked',
+                'value' => function ($data) {
+                    if ($data['locked'] == '1') {
+                        return 'tak';
+                    } else {
+                        return 'nie';
+                    }
+                }, 'format' => 'raw'
+            ],
             // 'expires_at',
             // 'credentials_expire_at',
             // 'roles:ntext',
@@ -66,11 +84,12 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'email_canonical:email',
             'first_name',
             'last_name',
-            'birthday',
-            'gender',
+            'birthday:date',
+            // 'gender',
             // 'created_at',
             // 'updated_at',
             'phone_number',
+            
             // 'subscribed_to_newsletter',
         ],
     ]) ?>
@@ -85,7 +104,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'last_name',
             'phone_number',
             'street',
-            'company',
+            // 'company',
             'city',
             'postcode',
             // 'created_at',

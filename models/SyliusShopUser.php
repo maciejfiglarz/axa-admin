@@ -57,7 +57,7 @@ class SyliusShopUser extends \yii\db\ActiveRecord
     {
         return [
             // [['enabled', 'salt', 'password', 'locked', 'roles', 'created_at'], 'required'],
-            [['username','enabled', 'password', 'locked'], 'required','message' => 'To pole jest wymagane'],
+            [['username','enabled', 'locked'], 'required','message' => 'To pole jest wymagane'],
             [['enabled', 'locked'], 'integer'],
             [['last_login', 'password_requested_at', 'verified_at', 'expires_at', 'credentials_expire_at', 'created_at', 'updated_at'], 'safe'],
             // [['roles'], 'string'],
@@ -85,7 +85,7 @@ class SyliusShopUser extends \yii\db\ActiveRecord
             'password_requested_at' => 'Password Requested At',
             'email_verification_token' => 'Email Verification Token',
             'verified_at' => 'Verified At',
-            'locked' => 'Locked',
+            'locked' => 'Zablokowany',
             'expires_at' => 'Expires At',
             'credentials_expire_at' => 'Credentials Expire At',
             'roles' => 'Roles',

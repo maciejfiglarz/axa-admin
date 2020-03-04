@@ -17,7 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'shopUserModel' => $shopUserModel,
         'customerModel' => $customerModel,
         'addressModel' => $addressModel,
-        'customerGroupModel' => $customerGroupModel 
+        'customerGroupModel' => $customerGroupModel,
+        'isEdit' => false 
     ]) ?>
 
 </div>

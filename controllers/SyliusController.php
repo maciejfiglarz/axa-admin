@@ -101,6 +101,7 @@ class SyliusController extends Controller
 
         if ($request->isPost) {
 
+            $plainPassword = Yii::$app->request->post('plainPassword');
             $isCustomerLoaded = $customerModel->load(Yii::$app->request->post());
             $isLoadedShopUser = $shopUserModel->load(Yii::$app->request->post());
             $isLoadedAddress = $addressModel->load(Yii::$app->request->post());
@@ -114,7 +115,7 @@ class SyliusController extends Controller
 
             if (!is_null($customerModelId)) {
                 $addressModel = $syliusHelper->prepareAddressModel($addressModel, $customerModelId);
-                $shopUserModel = $syliusHelper->prepareUserShopModel($shopUserModel, $customerModelId);
+                $shopUserModel = $syliusHelper->prepareUserShopModel($shopUserModel, $customerModelId,$plainPassword);
                 $customerModel = $syliusHelper->setCustomerGroupForCustomerModel($customerModel, $customerGroupId);
 
                 if (count(ActiveForm::validate($addressModel)) == 0 &&  count(ActiveForm::validate($customerGroupModel)) == 0 && count(ActiveForm::validate($customerModel)) == 0 && count(ActiveForm::validate($shopUserModel)) == 0) {
@@ -148,17 +149,15 @@ class SyliusController extends Controller
 
         $customerGroupModel = $this->findCustomerGroupModel($customerGroupModelId);
         $addressModel = $this->findAddressModel($customerGroupModelId);
-        
-
 
         $syliusHelper = new SyliusHelper();
 
         $request = Yii::$app->request;
 
-       //dd($shopUserModel,$customerModel);
 
         if ($request->isPost) {
-
+          
+            $plainPassword = Yii::$app->request->post('plainPassword');
             $customerModel->load(Yii::$app->request->post());
             $shopUserModel->load(Yii::$app->request->post());
             $addressModel->load(Yii::$app->request->post());
@@ -167,13 +166,13 @@ class SyliusController extends Controller
             $customerGroupModel = $syliusHelper->prepareCustomerGroupModel($customerGroupModel);
             $customerGroupId = $customerGroupModel->id;
             $customerModel = $syliusHelper->prepareCustomerModel($customerModel, $customerGroupId);
-          //  dd($customerModel);
+   
             $customerModelId = $customerModel->id;
             
             if (!is_null($customerModelId)) {
                 $addressModel = $syliusHelper->prepareAddressModel($addressModel, $customerModelId);
             
-                $shopUserModel = $syliusHelper->prepareUserShopModel($shopUserModel, $customerModelId);
+                $shopUserModel = $syliusHelper->prepareUserShopModel($shopUserModel, $customerModelId,$plainPassword);
                 $customerModel = $syliusHelper->setCustomerGroupForCustomerModel($customerModel, $customerGroupId);
                 
                 if (count(ActiveForm::validate($addressModel)) == 0 &&  count(ActiveForm::validate($customerGroupModel)) == 0 && count(ActiveForm::validate($customerModel)) == 0 && count(ActiveForm::validate($shopUserModel)) == 0) {
@@ -181,19 +180,6 @@ class SyliusController extends Controller
                 }
             }
         }
-
-
-        // if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        //     return $this->redirect(['view', 'id' => $model->id]);
-        // }
-
-
-        // $shopUserModel = $this->findShopUserModel($id);
-        // $customerModelId = $shopUserModel->id;
-        // $customerModel = $this->findCustomerModel($customerModelId);
-        // $customerGroupModelId = $customerModel->customer_group_id;
-        // $customerGroupModel = $this->findCustomerGroupModel($customerGroupModelId);
-        // $customerAddressModel = $this->findAddressModel($customerGroupModelId);
 
         return $this->render('update', [
             'shopUserModel' => $shopUserModel,

@@ -1,4 +1,6 @@
-
+<?php 
+use yii\helpers\Html;
+?>
 <?= $form->field($model, 'customer_id', ['labelOptions' => ['class' => 'display-none']])->textInput(['class' => 'display-none']) ?>
 
 <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
@@ -9,7 +11,12 @@
 
 <?= $form->field($model, 'salt', ['labelOptions' => ['class' => 'display-none']])->textInput(['maxlength' => true, 'class' => 'display-none']) ?>
 
-<?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
+<?= $form->field($model, 'password',['labelOptions' => ['class' => 'display-none']])->passwordInput(['maxlength' => true,'class' => 'display-none']) ?>
+
+<div class="form-group field-syliusshopuser-email">
+<label class="control-label" for="syliusshopuser-email">Nowe hasło</label>
+<?= Html::input('text','plainPassword','', $options=['class'=>'form-control','maxlength'=>255]) ?>
+</div>
 
 
 <?= $form->field($model, 'enabled', ['labelOptions' => ['class' => 'custom-control-label']])->checkBox(['class' => 'form-check-input']) ?>
