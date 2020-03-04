@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\SyliusShopUser;
 use app\models\SyliusCustomer;
+use app\models\SyliusCustomerGroup;
 use app\models\SyliusAddress;
 
 use yii\data\ActiveDataProvider;
@@ -55,8 +56,31 @@ class SyliusController extends Controller
      */
     public function actionView($id)
     {
+
+        $shopUserModel = $this->findShopUserModel($id);
+
+        $customerModelId = $shopUserModel->id;
+        $customerModel = $this->findCustomerModel($customerModelId );
+   
+        // $customerModelId = $shopUserModel->custroid;
+     
+        $customerGroupModelId = $customerModel->customer_group_id;
+        $customerGroupModel = $this->findCustomerGroupModel($customerGroupModelId);
+        
+        $customerAddressModel = $this->findAddressModel($customerGroupModelId);
+        // dd( $customerAddressModel);
+
+        $customerGroupModel = $this->findAddressModel($customerModelId);
+
+
+      //  dd($customerGroupModel);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'shopUserModel' => $shopUserModel,
+            'customerModel' => $customerModel,
+            'customerGroupModel' => $customerGroupModel,
+            'customerAddressModel' => $customerAddressModel
+
         ]);
     }
 
@@ -69,43 +93,61 @@ class SyliusController extends Controller
     {
         $shopUserModel = new SyliusShopUser();
         $customerModel = new SyliusCustomer();
+        $customerGroupModel = new SyliusCustomerGroup();
         $addressModel  = new SyliusAddress();
-
+        $today  = date('Y-m-d H:i:s');
         $request = Yii::$app->request;
 
         if ($request->isPost) {
 
-        $isCustomerLoaded = $customerModel->load(Yii::$app->request->post());
-        $isLoadedShopUser = $shopUserModel->load(Yii::$app->request->post());
-        $isLoadedAddress = $addressModel->load(Yii::$app->request->post());
+            $isCustomerLoaded = $customerModel->load(Yii::$app->request->post());
+            $isLoadedShopUser = $shopUserModel->load(Yii::$app->request->post());
+            $isLoadedAddress = $addressModel->load(Yii::$app->request->post());
+            $isCustomerGroupAddress = $customerGroupModel->load(Yii::$app->request->post());
 
-        $isCustomerSave =  $customerModel->save();
 
-        $customerModel->refresh();
-        $customerId = $customerModel->id;
-         // dd($customerModel->errors);
-        $shopUserModel->customer_id = $customerId;
+            $isCustomerGroupAddress = $customerGroupModel->save();
+            $customerGroupId = $customerGroupModel->id;
 
-        
-      //  $shopUserModel->refresh();
-    //dd($shopUserModel);
-   // dd($customerId,$isLoadedAddress);
-  //  var_dump($isCustomerLoaded , $isLoadedShopUser , $shopUserModel->save(),$shopUserModel->customer_id,$shopUserModel->errors,$isLoadedAddress);
 
-        if ($isCustomerLoaded &&  $isLoadedShopUser && $isLoadedAddress && $shopUserModel->save()) {
-         
-            return $this->redirect(['view', 'id' => $shopUserModel->id]);
+            $customerModel->subscribed_to_newsletter = 0;
+            $customerModel->created_at = $today;
+            $customerModel->customer_group_id = $customerGroupId;
+
+            $isCustomerSave =  $customerModel->save();
+            $customerModel->refresh();
+
+            //var_dump($customerModel);
+            $customerId = $customerModel->id;
+            // dd($customerId);
+
+            $addressModel->created_at = $today;
+            $addressModel->customer_id = $customerId;
+            $isAddressSave  = $addressModel->save();
+
+                        
+            $shopUserModel->customer_id = $customerId;
+            $shopUserModel->created_at = $today;
+
+            //  $shopUserModel->refresh();
+            //dd($shopUserModel);
+            // dd($customerId,$isLoadedAddress);
+            //  var_dump($isCustomerLoaded , $isLoadedShopUser , $shopUserModel->save(),$shopUserModel->customer_id,$shopUserModel->errors,$isLoadedAddress);
+             //   dd($shopUserModel->save());
+            if ($isCustomerLoaded &&  $isLoadedShopUser && $isLoadedAddress && $shopUserModel->save()) {
+
+                return $this->redirect(['view', 'id' => $shopUserModel->id]);
+            }
+            var_dump($isCustomerLoaded, $isLoadedShopUser, $shopUserModel->save(), $shopUserModel->customer_id, $shopUserModel->errors, $isLoadedAddress);
         }
-        var_dump($isCustomerLoaded , $isLoadedShopUser , $shopUserModel->save(),$shopUserModel->customer_id,$shopUserModel->errors,$isLoadedAddress);
-
-      }
 
 
 
         return $this->render('create', [
             'shopUserModel' => $shopUserModel,
             'customerModel' => $customerModel,
-            'addressModel' => $addressModel 
+            'addressModel' => $addressModel,
+            'customerGroupModel' => $customerGroupModel
         ]);
     }
 
@@ -150,7 +192,7 @@ class SyliusController extends Controller
      * @return SyliusShopUser the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findShopUserModel($id)
     {
         if (($model = SyliusShopUser::findOne($id)) !== null) {
             return $model;
@@ -158,4 +200,33 @@ class SyliusController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    protected function findCustomerModel($id)
+    {
+        if (($model = SyliusCustomer::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+
+    protected function findAddressModel($id)
+    {
+        if (($model = SyliusAddress::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    protected function findCustomerGroupModel($id)
+    {
+        if (($model = SyliusCustomerGroup::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
 }

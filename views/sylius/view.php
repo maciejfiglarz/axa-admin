@@ -4,10 +4,10 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\SyliusShopUser */
+/* @var $shopUserModel app\models\SyliusShopUser */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Sylius Shop Users', 'url' => ['index']];
+$this->title = $shopUserModel->id;
+$this->params['breadcrumbs'][] = ['label' => 'Użytkownicy', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -16,18 +16,18 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Zmień', ['update', 'id' => $shopUserModel->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Usuń', ['delete', 'id' => $shopUserModel->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Jesteś pewny, że chcesz to usunąć?',
                 'method' => 'post',
             ],
         ]) ?>
     </p>
 
     <?= DetailView::widget([
-        'model' => $model,
+        'model' => $shopUserModel,
         'attributes' => [
             'id',
             'customer_id',

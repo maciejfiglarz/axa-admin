@@ -14,7 +14,20 @@ return [
     ],
     'language' => 'en-US',
     'components' => [
-        'db' => $db,
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=yii-sylius',
+            'username' => 'root',
+            'password' => '',
+            'charset' => 'utf8',
+        ],
+        'dbSylius' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=sylius',
+            'username' => 'root',
+            'password' => '',
+            'charset' => 'utf8',
+        ],
         'mailer' => [
             'useFileTransport' => true,
         ],

@@ -17,7 +17,7 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
-    'defaultRoute' => 'sylius/index',
+    'defaultRoute' => 'site/login',
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -50,18 +50,19 @@ $config = [
             ],
         ],
         // 'db' => $db,
+        // //newuser:XXJj123.
         'db' => [
             'class' => 'yii\db\Connection',
             'dsn' => 'mysql:host=localhost;dbname=yii-sylius',
-            'username' => 'root',
-            'password' => '',
+            'username' => 'newuser',
+            'password' => 'XXJj123.',
             'charset' => 'utf8',
         ],
         'dbSylius' => [
             'class' => 'yii\db\Connection',
             'dsn' => 'mysql:host=localhost;dbname=sylius',
-            'username' => 'root',
-            'password' => '',
+            'username' => 'newuser',
+            'password' => 'XXJj123.',
             'charset' => 'utf8',
         ],
 

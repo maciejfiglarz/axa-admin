@@ -3,21 +3,7 @@
 return [
 
 
-        'db' => [
-            'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=yii-sylius',
-            'username' => 'root',
-            'password' => '',
-            'charset' => 'utf8',
-        ],
-        'db2' => [
-            'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=sylius',
-            'username' => 'root',
-            'password' => '',
-            'charset' => 'utf8',
-
-    ],
+    //newuser:XXJj123.
 
     // 'class' => 'yii\db\Connection',
     // 'dsn' => 'mysql:host=localhost;dbname=yii-sylius',
