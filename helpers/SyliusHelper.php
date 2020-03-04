@@ -58,11 +58,16 @@ class SyliusHelper
             $s = $birthday;
             $date = strtotime($s);
             $birthday = date('Y-m-d H:i:s', $date);
+      
             $customerModelFromDB->birthday = $birthday;
-
+          // dd($customerModelFromDB);
             $email = $customerModel->email;
             $customerModelFromDB->email_canonical = $email;
             $customerModelFromDB->created_at = $this->today;
+
+            $customerModelFromDB->first_name = $customerModel->first_name;
+            $customerModelFromDB->last_name = $customerModel->last_name;
+
     
             $customerModelFromDB->update();
             return $customerModelFromDB;
@@ -136,8 +141,10 @@ class SyliusHelper
             return $userShopModelFromDB;
         }
 
+        $salt = md5($this->today);
+
         if(strlen($plainPassword)>0){
-            $salt = md5($this->today);
+         
             $options = [
                 'salt' => $salt, 
                 'cost' => 12
@@ -146,7 +153,7 @@ class SyliusHelper
             $userShopModel->password = $password; 
           
         }
-
+        $userShopModel->salt = $salt;
         $username = $userShopModel->username;
         $userShopModel->username_canonical = $username;
         $userShopModel->customer_id = $customerModelId;

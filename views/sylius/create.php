@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $model app\models\SyliusShopUser */
 
 $this->title = 'Stwórz użytkownika';
-$this->params['breadcrumbs'][] = ['label' => 'Stwórz', 'url' => ['index']];
+// $this->params['breadcrumbs'][] = ['label' => 'Stwórz', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sylius-shop-user-create">
