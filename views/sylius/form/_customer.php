@@ -1,5 +1,5 @@
 <?php
-use \kartik\datetime\DatePicker;
+use \kartik\date\DatePicker;
 ?>
 
 <?= $form->field($model, 'customer_group_id',['labelOptions' => [ 'class' => 'display-none']])->textInput(['class' => 'display-none']) ?>
@@ -15,14 +15,13 @@ use \kartik\datetime\DatePicker;
 <?= $form->field($model, 'last_name')->textInput(['maxlength' => true]) ?>
 
 <div class="form-group field-syliuscustomer-birthday">
-<label class="control-label" for="w1">Urodziny</label>
+
 <?php
-echo DatePicker::widget([
-    'name' => 'birthday',
+echo $form->field($model, 'birthday')->widget(DatePicker::classname(), [
     'options' => ['placeholder' => 'Wybierz datę...'],
     'convertFormat' => true,
     'pluginOptions' => [
-        'format' => 'd-M-Y',
+        'format' => 'dd-M-yyyy',
         // 'startDate' => '01-Mar-2014 12:00 AM',
         'todayHighlight' => true,
     ]
@@ -31,7 +30,7 @@ echo DatePicker::widget([
 </div>
 
 
-<?= $form->field($model, 'gender')->textInput(['maxlength' => true]) ?>
+<?= $form->field($model, 'gender',['labelOptions' => [ 'class' => 'display-none']])->textInput(['maxlength' => true,'class' => 'display-none']) ?>
 
 <?= $form->field($model, 'created_at',['labelOptions' => [ 'class' => 'display-none']])->textInput(['class' => 'display-none']) ?>
 

@@ -56,7 +56,7 @@ class SyliusCustomer extends \yii\db\ActiveRecord
             [['email'], 'required','message' => 'To pole jest wymagane'],
             [['birthday'], 'safe'],
             [['email', 'email_canonical', 'first_name', 'last_name', 'phone_number'], 'string', 'max' => 255],
-            [['gender'], 'string', 'max' => 1],
+            [['gender'], 'string', 'max' => 100],
             [['email'], 'unique','message' => 'Użytkownik o takim adresie email istnieje już w bazie danych'],
             // [['email_canonical'], 'unique','message' => 'Użytkownik o takim adresie email istnieje już w bazie danych'],
             [['default_address_id'], 'unique','message' => 'Uniqu'],

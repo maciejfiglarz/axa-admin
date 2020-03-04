@@ -14,12 +14,6 @@
 
 <?= $form->field($model, 'enabled', ['labelOptions' => ['class' => 'custom-control-label']])->checkBox(['class' => 'form-check-input']) ?>
 
-<div class="form-group">
-    <div class="custom-control custom-checkbox">
-        <?= $form->field($model, 'enabled', ['labelOptions' => ['class' => 'custom-control-input']])->checkBox(['class' => 'custom-control-label']) ?>
-    </div>
-</div>
-
 <?= $form->field($model, 'last_login', ['labelOptions' => ['class' => 'display-none']])->textInput(['class' => 'display-none']) ?>
 
 <?= $form->field($model, 'password_reset_token', ['labelOptions' => ['class' => 'display-none']])->textInput(['maxlength' => true, 'class' => 'display-none']) ?>

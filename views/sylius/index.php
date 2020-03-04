@@ -8,7 +8,7 @@ use yii\grid\GridView;
 
 $this->title = 'Lista użytkowników';
 $this->params['breadcrumbs'][] = $this->title;
-// dd($dataProvider->setDa);
+
 ?>
 <div class="sylius-shop-user-index">
 

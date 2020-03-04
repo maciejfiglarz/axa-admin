@@ -65,10 +65,19 @@ class SyliusHelper
         $customerModelFromDB = $this->findCustomerByEmailModel($customerEmail);
 
         if ($customerModelFromDB) {
+            
+            $birthday = $customerModel->birthday;
+            $s = $birthday;
+            $date = strtotime($s);
+            $birthday = date('d-M-Y H:i:s', $date);
+
+            $customerModelFromDB->birthday = $birthday;
+
             $email = $customerModel->email;
-            $customerModel->email_canonical = $email;
-            $customerModel->created_at = $this->today;
-            $customerModel->update();
+            $customerModelFromDB->email_canonical = $email;
+            $customerModelFromDB->created_at = $this->today;
+    
+            $customerModelFromDB->update();
             return $customerModelFromDB;
         }
 
@@ -77,6 +86,13 @@ class SyliusHelper
         $customerModel->subscribed_to_newsletter = 0;
         $customerModel->created_at = $this->today;
         $customerModel->customer_group_id = $customerGroupId;
+
+        $birthday = $customerModel->birthday;
+        $s = $birthday. ' 19:00:02';
+        $date = strtotime($s);
+        $birthday = date('d-M-Y H:i:s', $date);
+        $customerModel->birthday = $birthday;
+     
         $customerModel->save();
         return $customerModel;
     }
@@ -98,15 +114,22 @@ class SyliusHelper
 
     public function prepareUserShopModel($userShopModel, $customerModelId)
     {
-
+        
         $userShopModelFromDB = $this->findUserModelByCustomerModelId($customerModelId);
-
+       // dd($customerModelId);
         if ($userShopModelFromDB) {
             $username = $userShopModelFromDB->username;
             $userShopModelFromDB->username_canonical = $username;
             $userShopModelFromDB->update();
             return $userShopModelFromDB;
         }
+        // $password = $userShopModel->password;
+        // $options = [
+        //     'salt' => 'fgrsgdrgdrgdrgdgffefefdffefefe',  //write your own code to generate a suitable salt
+        //     'cost' => 12 // the default cost is 10
+        // ];
+        // $hash = password_hash($password, PASSWORD_ARGON2I, $options);
+
         $username = $userShopModel->username;
         $userShopModel->username_canonical = $username;
         $userShopModel->customer_id = $customerModelId;
