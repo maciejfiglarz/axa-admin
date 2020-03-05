@@ -1,24 +1,24 @@
 <?php
-
 use yii\helpers\Html;
-
 /* @var $this yii\web\View */
 /* @var $model app\models\SyliusShopUser */
 
-$this->title = 'Stwórz użytkownika';
 // $this->params['breadcrumbs'][] = ['label' => 'Stwórz', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+// $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div class="sylius-shop-user-create">
 
-    <!-- <h1><?= Html::encode($this->title) ?></h1> -->
-
+<?php 
+$this->title = trim('Stwórz użytkownika');
+?>
     <?= $this->render('_form', [
         'shopUserModel' => $shopUserModel,
         'customerModel' => $customerModel,
         'addressModel' => $addressModel,
-        'customerGroupModel' => $customerGroupModel,
-        'isEdit' => false 
+        // 'customerGroupModel' => $customerGroupModel,
+        'isEdit' => false ,
+        'customerGroupList' => $customerGroupList
     ]) ?>
 
 </div>

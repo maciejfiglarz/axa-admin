@@ -16,8 +16,9 @@ $this->params['breadcrumbs'][] = 'Zmień';
         'shopUserModel' => $shopUserModel,
         'customerModel' => $customerModel,
         'addressModel' => $addressModel,
-        'customerGroupModel' => $customerGroupModel,
-        'isEdit' => false 
+        // 'customerGroupModel' => $customerGroupModel,
+        'isEdit' => false ,
+        'customerGroupList' => $customerGroupList
     ]) ?>
 
 </div>

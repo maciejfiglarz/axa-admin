@@ -1,17 +1,26 @@
 html,
 body {
     height: 100%;
+    /* min-height: 100%; */
 }
-
+h1{
+    margin-block-start: 0;
+    margin-block-end: 0;
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+}
 .wrap {
-    min-height: 100%;
+    /* min-height: 100%;
     height: auto;
     margin: 0 auto -60px;
-    padding: 0 0 60px;
+    padding: 0 0 60px; */
 }
 
 .display-none {
     display:none;
+}
+.content-header h1 {
+    text-align:left;
 }
 
 .form__partial {
@@ -24,6 +33,22 @@ body {
 .content > .form__partial {
     margin: 0 0 20px 0; outline:1px solid red;
 }
+.logout {
+ position:absolute;
+ top:5px;
+ right:10px;
+}
+
+.logout button {
+    color:white;
+    opacity:0.8;
+}
+
+.logout button:hover {
+    color:white;
+    opacity:1;
+}
+
 
 .wrap > .container {
     padding: 70px 15px 20px;

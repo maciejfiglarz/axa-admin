@@ -26,12 +26,47 @@ class SyliusHelper
         $this->today = date('Y-m-d H:i:s');
     }
 
+
+
+    public function prepareCustomerGroup()
+    {
+        $items = SyliusCustomerGroup::find()->all();
+        $preparedArray = [];
+        foreach($items as $item){
+            $preparedArray[$item->id] = $item->name;
+        }
+        return $preparedArray;
+    }
+
+
+
+    public function changePasswordCustomerModel($shopUserModel,$plainPassword){
+        
+        $salt = $shopUserModel->salt;
+
+        $password = $shopUserModel->password;
+
+        if(strlen($plainPassword) > 0){
+     
+            $options = [
+                'salt' => $salt,  //write your own code to generate a suitable salt
+                'cost' => 12 // the default cost is 10
+            ];
+            $password = password_hash($plainPassword, PASSWORD_ARGON2I, $options);
+            $shopUserModel->password = $password; 
+          
+        }
+        return $shopUserModel;
+
+    }
+
     public function prepareAddressModel($addressModel, $customerModelId)
     {
-
+      
         $addressModelFromDB = $this->findAddressModelByCustomerId($customerModelId);
-
+    
         if ($addressModelFromDB) {
+            $addressModel->customer_id = $customerModelId;
             $addressModelFromDB->created_at = $this->today;
             $addressModelFromDB->updated_at = $this->today;
             $addressModel->update();
@@ -46,7 +81,9 @@ class SyliusHelper
         return $addressModel;
     }
 
-    public function prepareCustomerModel($customerModel, $customerGroupId)
+
+
+    public function prepareCustomerModel($customerModel)
     {
 
         $customerEmail = $customerModel->email;
@@ -58,17 +95,16 @@ class SyliusHelper
             $s = $birthday;
             $date = strtotime($s);
             $birthday = date('Y-m-d H:i:s', $date);
-      
+        
             $customerModelFromDB->birthday = $birthday;
-          // dd($customerModelFromDB);
+       
             $email = $customerModel->email;
             $customerModelFromDB->email_canonical = $email;
             $customerModelFromDB->created_at = $this->today;
-
+            $customerModelFromDB->customer_group_id = $customerModel->customer_group_id;
             $customerModelFromDB->first_name = $customerModel->first_name;
             $customerModelFromDB->last_name = $customerModel->last_name;
 
-    
             $customerModelFromDB->update();
             return $customerModelFromDB;
         }
@@ -79,7 +115,7 @@ class SyliusHelper
         $customerModel->email_canonical = $email;
         $customerModel->subscribed_to_newsletter = 0;
         $customerModel->created_at = $this->today;
-        $customerModel->customer_group_id = $customerGroupId;
+
 
         $birthday = $customerModel->birthday;
         $s = $birthday. ' 19:00:02';
@@ -121,7 +157,6 @@ class SyliusHelper
 
             $password = $userShopModel->password;
     
-
             if(strlen($plainPassword)>0){
          
                 $options = [
@@ -141,8 +176,9 @@ class SyliusHelper
             return $userShopModelFromDB;
         }
 
-        $salt = md5($this->today);
 
+        $salt = '7de067a7e10f4eb7f8a7a86562fa61cf';
+    
         if(strlen($plainPassword)>0){
          
             $options = [
@@ -174,9 +210,9 @@ class SyliusHelper
 
     }
 
-    public function setCustomerGroupForCustomerModel($customerModel, $customerGroupId)
+    public function setAddressCustomerModel($customerModel, $customerGroupId)
     {
-        $customerModel->customer_group_id = $customerGroupId;
+        $customerModel->add_id = $customerGroupId;
         $customerModel->update();
         return $customerModel;
     }
@@ -217,6 +253,16 @@ class SyliusHelper
     {
 
         if (($model = SyliusAddress::find()->where(['id' => $id])->one()) !== null) {
+            return $model;
+        }
+
+        return null;
+    }
+
+    public function findAddressModelByCustomer($id)
+    {
+
+        if (($model = SyliusAddress::find()->where(['customer_id' => $id])->one()) !== null) {
             return $model;
         }
 

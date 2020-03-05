@@ -1,8 +1,15 @@
 <?php
 use \kartik\date\DatePicker;
+use yii\web\View;
 ?>
 
-<?= $form->field($model, 'customer_group_id',['labelOptions' => [ 'class' => 'display-none']])->textInput(['class' => 'display-none']) ?>
+
+<?php 
+ echo $form->field($model, 'customer_group_id',['labelOptions' => [ 'label' => 'Grupa dla klienta']])->dropDownList(
+    $customerGroupList
+ );
+
+?>
 
 <?= $form->field($model, 'default_address_id',['labelOptions' => [ 'class' => 'display-none']])->textInput(['class' => 'display-none']) ?>
 
@@ -17,20 +24,31 @@ use \kartik\date\DatePicker;
 <div class="form-group field-syliuscustomer-birthday">
 
 <?php
+$model->birthday = substr($model->birthday,0,10);
+
 echo $form->field($model, 'birthday')->widget(DatePicker::classname(), [
     'options' => ['placeholder' => 'Wybierz datę...'],
     'convertFormat' => true,
     'pluginOptions' => [
-        'format' => 'dd-M-yyyy',
-        // 'startDate' => '01-Mar-2014 12:00 AM',
+        // 'format' => 'dd-M-yyyy',
+        'format' => 'yyyy-M-dd',
+        // 'startDate' => date("Y-m-d"),
         'todayHighlight' => true,
     ]
 ]);
 ?>
 </div>
 
+<?php 
+ echo $form->field($model, 'gender')
+ ->dropDownList(
+     ['0'=>'Mężczyzna',
+      '1'=> 'Kobieta'
+     ]  
+ );
 
-<?= $form->field($model, 'gender',['labelOptions' => [ 'class' => 'display-none']])->textInput(['maxlength' => true,'class' => 'display-none']) ?>
+?>
+
 
 <?= $form->field($model, 'created_at',['labelOptions' => [ 'class' => 'display-none']])->textInput(['class' => 'display-none']) ?>
 

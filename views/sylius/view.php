@@ -85,7 +85,16 @@ $this->params['breadcrumbs'][] = $customerModel->first_name .' '.  $customerMode
             'first_name',
             'last_name',
             'birthday:date',
-            // 'gender',
+            [
+                'attribute' => 'gender',
+                'value' => function ($data) {
+                    if ($data['gender'] == '1') {
+                        return 'Mężczyzna';
+                    } else {
+                        return 'Kobieta';
+                    }
+                }, 'format' => 'raw'
+            ],
             // 'created_at',
             // 'updated_at',
             'phone_number',
